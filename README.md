@@ -1,13 +1,7 @@
 # Twitter Data Ingestion Using Flume
 
 ###
-# Author:
-
-# Vidur Nayyar
-
-
-
-# Content
+# Author: Vidur Nayyar
 
 
 
