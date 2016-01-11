@@ -11,8 +11,8 @@
 -- note when automating the code using oozie remove all the drop tables, they are flagged by --#######DROP TABLE##########
 
 --ADD JAR json-serde-1.1.6-SNAPSHOT-jar-with-dependencies.jar; -- you need to run this command only once, the first time
-set hive.support.sql11.reserved.keywords=false;-- important to read jar files
-
+--set hive.support.sql11.reserved.keywords=false;-- important to read jar files
+set hive.support.sql11.reserved.keywords=false;
 DROP TABLE IF EXISTS tweets_raw; --#######DROP TABLE##########
 CREATE EXTERNAL TABLE IF NOT EXISTS tweets_raw (
    id BIGINT,
@@ -47,7 +47,7 @@ ROW FORMAT SERDE 'org.apache.hive.hcatalog.data.JsonSerDe'
 -----===============================================================================================
 -- this will change to where the data is stored, this will be automated when partitions are created
 -----===============================================================================================
-LOCATION '/tmp/flume/twitter/hotel/2016/01/08'-- this will change
+LOCATION '/tmp/flume/hotel2'-- this will change
 ;
 
 
@@ -63,7 +63,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS dictionary (
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' 
 STORED AS TEXTFILE
-LOCATION '/user/root/TwitterData/dictionary'; -- where you saved the dictionary
+LOCATION '/tmp/data/dictionary';
 
 CREATE EXTERNAL TABLE IF NOT EXISTS time_zone_map (
     time_zone string,
@@ -72,7 +72,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS time_zone_map (
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' 
 STORED AS TEXTFILE
-LOCATION '/user/root/TwitterData/time_zone_map'; -- where you saved the time_zone_map
+LOCATION '/tmp/data/time_zone_map';
 
 DROP VIEW IF EXISTS tweets_simple;--#######DROP TABLE##########
 
@@ -190,13 +190,11 @@ WHERE lower(text) LIKE "% courtyard%" AND ( lower(text) LIKE "%hotel%" OR lower(
 -------------------------------------
 --      the code below needs to be updated depending on requirements
 
-DROP TABLE IF EXISTS twitter_3grams;--#######DROP TABLE##########
--- context n-gram made readable
-set hive.execution.engine = mr;
+--#######DROP TABLE##########
+DROP TABLE IF EXISTS twitter_3grams;
+SET hive.execution.engine = mr;
 CREATE TABLE IF NOT EXISTS twitter_3grams
 STORED AS RCFile
-
-----------
 
 AS
 SELECT year, month, day, hour,ngs-- snippet--,snippet1,snippet2,snippet3 
@@ -210,8 +208,9 @@ FROM
 FROM tweets_raw
 group by year,month,day, hour 
 ) tweets_raw
---LATERAL VIEW explode(  ngs  ) ngsTab AS snippet-- ngsTab is random alias => must be there even though not used
 ;
+--LATERAL VIEW explode(  ngs  ) ngsTab AS snippet-- ngsTab is random alias => must be there even though not used
+
 -----===============================================================================================
 --                                        Author Vidur
 -----===============================================================================================
