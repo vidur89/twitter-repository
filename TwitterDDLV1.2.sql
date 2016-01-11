@@ -142,14 +142,14 @@ FROM tweets_clean t LEFT OUTER JOIN tweets_sentiment s on t.id = s.id;
 -----===============================================================================================
 --         you can change then dependng on the requirements
 
-DROP VIEW marriott;--#######DROP TABLE##########
-DROP VIEW holiday;--#######DROP TABLE##########
-DROP VIEW days;--#######DROP TABLE##########
-DROP VIEW super8;--#######DROP TABLE##########
-DROP VIEW quality;--#######DROP TABLE##########
-DROP VIEW hampton;--#######DROP TABLE##########
-DROP VIEW motel6;--#######DROP TABLE##########
-DROP VIEW courtyard; --#######DROP TABLE##########
+DROP VIEW IF EXISTS marriott;--#######DROP TABLE##########
+DROP VIEW IF EXISTS holiday;--#######DROP TABLE##########
+DROP VIEW IF EXISTS days;--#######DROP TABLE##########
+DROP VIEW IF EXISTS super8;--#######DROP TABLE##########
+DROP VIEW IF EXISTS quality;--#######DROP TABLE##########
+DROP VIEW IF EXISTS hampton;--#######DROP TABLE##########
+DROP VIEW IF EXISTS motel6;--#######DROP TABLE##########
+DROP VIEW IF EXISTS courtyard; --#######DROP TABLE##########
 
 CREATE VIEW IF NOT EXISTS marriott AS
 SELECT * FROM tweets_clean
